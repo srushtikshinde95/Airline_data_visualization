@@ -1,0 +1,41 @@
+# Maven build output
+target/
+*.jar
+*.war
+*.ear
+
+# Eclipse & IDE build output
+bin/
+.classpath
+.project
+.settings/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+out/
+
+# VS Code
+.vscode/
+
+# Python cache & virtual environments
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+*.egg-info/
+dist/
+build/
+
+# Operating System files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs & temp
+*.log
+tmp/
+temp/

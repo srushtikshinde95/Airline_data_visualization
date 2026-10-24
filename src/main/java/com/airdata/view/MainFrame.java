@@ -11,6 +11,7 @@ import com.airdata.view.components.FilterPanel;
 import com.airdata.view.components.ModernButton;
 import com.airdata.view.components.VectorIcons;
 import com.airdata.view.panels.*;
+import com.airdata.view.panels.MaintenancePanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -72,6 +73,7 @@ public class MainFrame extends JFrame implements IDatasetListener {
         cardsContainer.add(new DatasetTablePanel(controller), "DATASET");
         cardsContainer.add(new VisualizationPanel(controller), "VISUALIZATION");
         cardsContainer.add(new AnalyticsPanel(controller), "ANALYTICS");
+        cardsContainer.add(new MaintenancePanel(controller), "MAINTENANCE");
         cardsContainer.add(new AboutPanel(), "ABOUT");
 
         rightPanel.add(cardsContainer, BorderLayout.CENTER);
@@ -127,6 +129,7 @@ public class MainFrame extends JFrame implements IDatasetListener {
         addNavButton(menuPanel, "Analytics & KPIs", "ANALYTICS", VectorIcons.IconType.ANALYTICS);
         addNavButton(menuPanel, "About & OOP Info", "ABOUT", VectorIcons.IconType.ABOUT);
 
+        addNavButton(menuPanel, "Predictive Maint.", "MAINTENANCE", VectorIcons.IconType.ALERT);
         sidebar.add(menuPanel, BorderLayout.CENTER);
 
         // Sidebar Footer

@@ -1,10 +1,9 @@
+Write-Host "==========================================================" -ForegroundColor Cyan
+Write-Host "  Launching Aircraft Predictive Maintenance System        " -ForegroundColor Cyan
+Write-Host "  Web Dashboard: http://localhost:8081                     " -ForegroundColor Green
+Write-Host "==========================================================" -ForegroundColor Cyan
+
 $projectRoot = $PSScriptRoot
-$binDir = Join-Path $projectRoot "bin"
+Set-Location $projectRoot
 
-if (-not (Test-Path $binDir)) {
-    Write-Host "Project not compiled yet. Running build first..." -ForegroundColor Yellow
-    & "$projectRoot\build.ps1"
-}
-
-Write-Host "Launching Airline Data Visualization Software..." -ForegroundColor Green
-java -cp "$binDir" com.airdata.main.AirlineApp
+mvn exec:java "-Dexec.mainClass=com.airdata.web.WebAppMain"

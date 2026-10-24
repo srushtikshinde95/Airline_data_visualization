@@ -1,0 +1,54 @@
+{
+  "classifierModelName": "Ensemble Random Forest Classifier (40 Trees, Gini Impurity, Bagging)",
+  "classificationAccuracy": 0.7916666666666666,
+  "precision": 0.967741935483871,
+  "recall": 0.35714285714285715,
+  "f1Score": 0.5217391304347826,
+  "rocAuc": 0.9450231481481481,
+  "confusionMatrix": [
+    [
+      358,
+      2
+    ],
+    [
+      108,
+      60
+    ]
+  ],
+  "regressorModelName": "Ensemble Random Forest Regressor (40 Trees, MSE Reduction, 90% CI)",
+  "rulMeanAbsoluteError": 13.211252404342138,
+  "rulRootMeanSquaredError": 20.1188031815474,
+  "rulR2Score": 0.716284999519669,
+  "anomalyModelName": "Multivariate Isolation Forest (100 iTrees, Subsample 256)",
+  "totalEvaluatedReadings": 528,
+  "detectedAnomalyCount": 11,
+  "anomalyRatePct": 2.083333333333333,
+  "avgAnomalyScore": 0.46702842273324285,
+  "trainingDatasetName": "aircraft_sensor_telemetry.csv (NASA C-MAPSS Physics-Aligned)",
+  "trainingSampleCount": 1056,
+  "testSampleCount": 528,
+  "lastTrainedTimestamp": "2026-10-24 18:13:59",
+  "featureImportanceRankings": {
+    "oil_temp_celsius": 0.235435849692893,
+    "brake_temp_celsius": 0.11485552550643235,
+    "total_operating_hours": 0.09092542656448319,
+    "cycles_since_last_maint": 0.08107453085573521,
+    "oil_pressure_psi": 0.08007703151488489,
+    "apu_egt_celsius": 0.07185159846239872,
+    "egt_celsius": 0.06213759743201087,
+    "fuel_flow_pph": 0.059197396690180905,
+    "core_vibration_ips": 0.058509930744252356,
+    "hydraulic_temp_celsius": 0.04008991675925607,
+    "hydraulic_pressure_psi": 0.0362018895552634,
+    "bleed_pressure_psi": 0.03228148419742199,
+    "n1_speed_pct": 0.014016984660641692,
+    "n2_speed_pct": 0.013787030368101867,
+    "fan_vibration_ips": 0.009557806996043416
+  },
+  "documentedLimitations": [
+    "Predictive failure risk is a statistical precursor probability and not a guarantee of mechanical failure.",
+    "RUL estimation is trained on simulated degradation curves; operational flight cycles outside standard ambient conditions may shift confidence bounds.",
+    "Isolation Forest detects multidimensional anomalies which require borescope/physical inspection before condemning line components.",
+    "All scheduled maintenance actions must comply with FAA / EASA Approved Aircraft Maintenance Programs (AMP) and OEM Maintenance Planning Documents (MPD)."
+  ]
+}

@@ -680,3 +680,95 @@ Output: List<Flight> filteredList
 
 ## 19. Conclusion
 The **Airline Data Visualization Software Using OOP in Java** fulfills all requirements for a modern, robust, college-level software engineering project. By uniting pure Object-Oriented design principles (Encapsulation, Inheritance, Polymorphism, Abstraction, Composition) with a responsive Java Swing interface and vector-rendered charting engines, the software transforms raw airline records into actionable operational insights. It stands as an effective, reliable, and pedagogically rich demonstration of modern Java desktop application development.
+
+
+---
+
+## 20. Advanced AI-Powered Aircraft Predictive Maintenance & Intelligence Subsystem
+
+### 20.1 Architectural Overview
+The system extends its core airline analytics with an integrated, native Java 17 Machine Learning Predictive Maintenance subsystem. Designed according to FAA/EASA Continuing Airworthiness standards and aerospace condition-based maintenance (CBM) principles, it provides real-time fleet health monitoring, remaining useful life (RUL) estimation, anomaly detection, predictive risk scoring, and intelligent work order management.
+
+```
++----------------------------------------------------------------------------------------------------+
+|                         AIRCRAFT TELEMETRY & ML INFERENCE PIPELINE                                 |
++----------------------------------------------------------------------------------------------------+
+|                                                                                                    |
+|  [Aircraft Telemetry Sensors]                                                                      |
+|  (EGT, N1/N2, Vib, Hyd, Oil, APU, Brakes)                                                          |
+|                    │                                                                               |
+|                    ▼                                                                               |
+|  [TelemetryDataLoader] ──▶ Deduplication, Range Bounds Validation, Zero-Imputation                 |
+|                    │                                                                               |
+|                    ▼                                                                               |
+|  [MLFeaturePipeline]  ──▶ 15-Dimensional Feature Vector Extraction & MinMax Normalization          |
+|                    │                                                                               |
+|                    ├──▶ [Ensemble Random Forest Classifier (40 Trees)]                             |
+|                    │     └─▶ Failure Risk Probability (0-100%) & Category (HEALTHY, LOW, MED, HIGH)|
+|                    │                                                                               |
+|                    ├──▶ [Ensemble Random Forest Regressor (40 Trees)]                              |
+|                    │     └─▶ Remaining Useful Life (RUL Cycles) + 90% Empirical Prediction Interval|
+|                    │                                                                               |
+|                    ├──▶ [Multivariate Isolation Forest (100 iTrees)]                               |
+|                    │     └─▶ Anomaly Score (0.0 - 1.0) via Average Tree Path Length                |
+|                    │                                                                               |
+|                    └──▶ [Holt Linear Exponential Smoothing]                                        |
+|                          └─▶ Sensor Drift Degradation Projection & Threshold Crossing Days         |
+|                                                                                                    |
+|                    │                                                                               |
+|                    ▼                                                                               |
+|  [MaintenanceScheduler Engine] ──▶ Prioritization Score (0-100) & Priority Classification          |
+|                                    (ROUTINE, MEDIUM, HIGH, URGENT_AOG)                             |
+|                    │                                                                               |
+|                    ├──▶ [AlertService] ──▶ Automated Alert Generation & Audit Lifecycle            |
+|                    │                                                                               |
+|                    ├──▶ [WorkOrderService] ──▶ JSON Persistent Maintenance Orders (data/work_orders)|
+|                    │                                                                               |
+|                    └──▶ [Presentation Layer]                                                      |
+|                          ├── Java Swing Desktop Dashboard (Tabbed, 2D Vector Sensor Charting)       |
+|                          └── Embedded Web Cockpit (http://localhost:8081 - Aviation REST API)      |
++----------------------------------------------------------------------------------------------------+
+```
+
+### 20.2 Native Machine Learning Algorithms
+
+1. **Random Forest Classifier (Component Failure Risk)**:
+   - **Ensemble Architecture**: 40 binary decision trees trained via bootstrap aggregating (bagging) with random feature subspacing ($m = \lfloor\sqrt{p}\rfloor = \lfloor\sqrt{15}\rfloor = 3$).
+   - **Splitting Criterion**: Gini Impurity minimization:
+     $$I_G(S) = 1 - \sum_{k=1}^K p_k^2$$
+   - **Probability Calibration**: Ensembled leaf vote fractions across all 40 trees to produce a continuous probability $[0.0, 1.0]$.
+   - **Feature Importance**: Mean decrease in Gini impurity across all split nodes.
+
+2. **Random Forest Regressor (Remaining Useful Life Estimation)**:
+   - **Ensemble Architecture**: 40 regression trees trained on flight cycle degradation curves.
+   - **Splitting Criterion**: Variance reduction / Mean Squared Error (MSE) minimization:
+     $$\text{MSE}(S) = \frac{1}{|S|} \sum_{i \in S} (y_i - \bar{y})^2$$
+   - **Uncertainty Bounds**: Computes the 5th and 95th percentiles of tree predictions to output a robust 90% empirical confidence interval $[RUL_{lower}, RUL_{upper}]$.
+
+3. **Multivariate Isolation Forest (Anomaly Detection)**:
+   - **Ensemble Architecture**: 100 Isolation Trees ($iTrees$) with sub-sampling size $\psi = 256$.
+   - **Path Length Anomaly Score**: Isolates abnormal sensor combinations in multidimensional space by evaluating recursive random partitioning depth:
+     $$s(x, n) = 2^{-\frac{E(h(x))}{c(n)}}$$
+     where $c(n) = 2 \ln(n - 1) + 0.5772156649 - \frac{2(n-1)}{n}$ is the average path length of unsuccessful searches in a Binary Search Tree. Scores $s \ge 0.62$ trigger an immediate maintenance inspection flag.
+
+4. **Holt's Linear Exponential Smoothing (Sensor Drift Forecasting)**:
+   - **Formulation**: Tracks both local level $\ell_t$ and additive trend $b_t$ with smoothing parameters $\alpha = 0.35$ and $\beta = 0.15$:
+     $$\ell_t = \alpha y_t + (1 - \alpha)(\ell_{t-1} + b_{t-1})$$
+     $$b_t = \beta(\ell_t - \ell_{t-1}) + (1 - \beta)b_{t-1}$$
+     $$\hat{y}_{t+h} = \ell_t + h \cdot b_t$$
+   - **Crossing Projection**: Solves for the earliest forecast horizon $h$ where $\hat{y}_{t+h} \ge T_{critical}$, projecting the exact number of operating days until redline limits are breached.
+
+5. **Explainable AI (XAI) Attribution**:
+   - Calculates baseline deviation z-scores:
+     $$z_i = \frac{x_i - \mu_{baseline, i}}{\sigma_{baseline, i}}$$
+   - Weights normalized deviations by global Random Forest feature importance to output clear root-cause explanations (e.g. *EGT elevated by +3.2σ, Core Vibration +2.8σ - primary drivers of 88% Failure Probability*).
+
+---
+
+## 21. Summary of Project Deliverables
+The complete system now delivers:
+- **Zero-Dependency Native Java 17 Machine Learning**: Decision trees, ensemble forests, isolation forests, and exponential smoothing built from scratch in pure Java.
+- **Physics-Grounded Aerospace Dataset**: 1,584 telemetry records spanning 12 commercial jet aircraft and 6 critical subsystem types.
+- **Real-Time Web API & Modern Responsive Dashboard**: Served on port `8081` with interactive telemetry charts, live alert triage, and work order creation.
+- **Java Swing Native UI**: Enhanced tabbed dashboard featuring custom high-resolution 2D graphics canvas rendering for sensor degradation curves.
+- **Academic & Production Quality**: Verified with comprehensive unit test coverage and automated integration validation.

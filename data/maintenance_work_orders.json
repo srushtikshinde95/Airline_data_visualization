@@ -1,0 +1,41 @@
+[
+  {
+    "workOrderId": "WO-0200",
+    "aircraftId": "AC-738-01",
+    "component": "ENGINE_1",
+    "priority": "URGENT_AOG",
+    "alertReferenceId": "ALT-0100",
+    "title": "Borescope Inspection of HPT Blades \u0026 Bearing 4 Survey",
+    "recommendedInspection": "Perform Stage 1 HPT blade inspection and measure bearing vibration.",
+    "assignedTechnician": "Senior Insp. J. Vance",
+    "status": "OPEN",
+    "createdAt": "2026-10-24 14:47:26",
+    "technicianNotes": "High core vibration (3.1 in/s) detected on last 3 flight sectors."
+  },
+  {
+    "workOrderId": "WO-0201",
+    "aircraftId": "AC-320-02",
+    "component": "HYDRAULICS",
+    "priority": "HIGH",
+    "alertReferenceId": "ALT-0101",
+    "title": "Hydraulic System B Pump Seal Replacement",
+    "recommendedInspection": "Pressure test hydraulic reservoir lines and replace EDP seal.",
+    "assignedTechnician": "Technician R. Patel",
+    "status": "OPEN",
+    "createdAt": "2026-10-24 14:47:26",
+    "technicianNotes": "Gradual pressure loss from 3010 to 2640 PSI over 20 cycles."
+  },
+  {
+    "workOrderId": "WO-0202",
+    "aircraftId": "AC-777-01",
+    "component": "LANDING_GEAR",
+    "priority": "MEDIUM",
+    "alertReferenceId": "ALT-0102",
+    "title": "Main Gear Brake Assembly Inspection \u0026 Pin Measurement",
+    "recommendedInspection": "Inspect wear indicator pins on left and right truck assemblies.",
+    "assignedTechnician": "Lead Mech. S. Tanaka",
+    "status": "OPEN",
+    "createdAt": "2026-10-24 14:47:26",
+    "technicianNotes": "Elevated temperature trends (+35°C vs baseline) following heavy turnaround."
+  }
+]
