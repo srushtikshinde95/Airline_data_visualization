@@ -73,7 +73,7 @@ mvn clean package
 java -jar target/airline-data-visualization.jar
 ```
 
-- Accessible locally at: **`http://localhost:8081`**
+- Accessible locally at: **`https://airline-data-visualization.onrender.com/`**
 - On Render: Accessible at your assigned `https://<your-service>.onrender.com`
 
 To test with a custom port locally:
