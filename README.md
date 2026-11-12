@@ -37,31 +37,73 @@ An advanced, AI-powered **Aircraft Predictive Maintenance and Operational Intell
 
 ---
 
-## 💻 How to Run the Complete Application
+## ☁️ Deployment on Render
 
-### Option 1: Standard Maven Execution (Recommended)
+The web application is packaged with the **Maven Shade Plugin** into a self-contained, standalone executable JAR ready for deployment as a **Web Service** on [Render](https://render.com):
 
-From Windows PowerShell in the project directory:
+### Render Web Service Settings
 
-```powershell
-# 1. Navigate to the project directory
-cd C:\Users\srushti\.gemini\antigravity\scratch\airline-data-visualization
+| Setting | Value |
+|---|---|
+| **Environment** | `Java` (or `Docker`) |
+| **Java Version** | `17` |
+| **Build Command** | `mvn clean package` |
+| **Start Command** | `java -jar target/airline-data-visualization.jar` |
+| **Health Check Path** | `/health` |
+| **Auto-detected Port** | Handled dynamically via `PORT` environment variable (binds to `0.0.0.0:$PORT`) |
 
-# 2. Compile all source files
-mvn clean compile
+### How It Works on Render
+1. **Dynamic Port Binding**: `WebAppMain` reads the `PORT` environment variable assigned by Render's routing proxy (defaulting to `8081` when run locally).
+2. **0.0.0.0 Host Binding**: The embedded `HttpServer` binds to `0.0.0.0` ensuring incoming external HTTP traffic reaches the container.
+3. **Pure Headless Web Service**: `WebAppMain` starts only the embedded web server and REST APIs without attempting to initialize Java Swing desktop components, ensuring clean execution in headless Linux cloud containers.
+4. **Self-Contained Executable JAR**: Maven Shade bundles all dependencies (Gson, FlatLaf, resources) into `target/airline-data-visualization.jar`.
 
-# 3. Launch the Web Dashboard + Swing GUI
-mvn exec:java "-Dexec.mainClass=com.airdata.web.WebAppMain"
+---
+
+## 💻 How to Run the Application
+
+### 1. Run the Web Dashboard via Packaged JAR (Render / Production / Local)
+
+```bash
+# Build the shaded executable JAR
+mvn clean package
+
+# Run the standalone web server
+java -jar target/airline-data-visualization.jar
 ```
 
-Once running:
-- Open your web browser to: **`http://localhost:8081`**
-- The Swing desktop window will launch concurrently with the **Predictive Maint.** panel accessible from the left-hand navigation sidebar.
+- Accessible locally at: **`http://localhost:8081`**
+- On Render: Accessible at your assigned `https://<your-service>.onrender.com`
 
-### Option 2: Desktop GUI Only
+To test with a custom port locally:
+```bash
+# On Linux/macOS
+PORT=9000 java -jar target/airline-data-visualization.jar
+
+# On Windows PowerShell
+$env:PORT="9000"; java -jar target/airline-data-visualization.jar
+```
+
+### 2. Run the Web Dashboard via Maven
+
+```powershell
+mvn exec:java "-Dexec.mainClass=com.airdata.web.WebAppMain"
+```
+Or simply run:
+```powershell
+.\run.ps1
+```
+
+### 3. Run the Desktop Swing Application (Local Workstation Only)
+
+The desktop application is launched independently through its dedicated entry point:
 
 ```powershell
 mvn exec:java "-Dexec.mainClass=com.airdata.main.AirlineApp"
+```
+Or simply run:
+```powershell
+.\run-desktop.ps1
 ```
 
 ---

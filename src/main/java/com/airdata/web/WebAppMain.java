@@ -1,6 +1,5 @@
 package com.airdata.web;
 
-import com.airdata.main.AirlineApp;
 import com.airdata.maintenance.model.*;
 import com.airdata.maintenance.service.MaintenanceCoordinator;
 import com.google.gson.Gson;
@@ -18,21 +17,34 @@ import java.util.concurrent.Executors;
 
 /**
  * Embedded Web Application Server serving the Aircraft Predictive Maintenance Dashboard
- * and REST APIs at http://localhost:8081, synchronized with the Java Swing desktop application.
+ * and REST APIs. Suitable for deployment on Render, Docker, or local environments.
  */
 public class WebAppMain {
 
-    public static final int PORT = 8081;
+    public static final int DEFAULT_PORT = 8081;
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     public static void main(String[] args) throws Exception {
+        // Read port from environment variable (standard for Render / Heroku / Cloud Run)
+        int port = DEFAULT_PORT;
+        String portEnv = System.getenv("PORT");
+        if (portEnv != null && !portEnv.trim().isEmpty()) {
+            try {
+                port = Integer.parseInt(portEnv.trim());
+            } catch (NumberFormatException e) {
+                System.err.println("Invalid PORT environment variable '" + portEnv + "'. Falling back to " + DEFAULT_PORT);
+                port = DEFAULT_PORT;
+            }
+        }
+
         // Initialize the Predictive Maintenance Coordinator
         MaintenanceCoordinator coordinator = MaintenanceCoordinator.getInstance();
 
-        // 1. Start Embedded HTTP Server
-        HttpServer server = HttpServer.create(new InetSocketAddress(PORT), 0);
+        // 1. Start Embedded HTTP Server bound to 0.0.0.0 so Render and external clients can access it
+        HttpServer server = HttpServer.create(new InetSocketAddress("0.0.0.0", port), 0);
 
         server.createContext("/", new DashboardHtmlHandler());
+        server.createContext("/health", new HealthCheckHandler());
         server.createContext("/api/fleet", new FleetApiHandler());
         server.createContext("/api/alerts", new AlertsApiHandler());
         server.createContext("/api/alerts/acknowledge", new AcknowledgeAlertApiHandler());
@@ -48,17 +60,9 @@ public class WebAppMain {
 
         System.out.println("==========================================================");
         System.out.println("  AIRCRAFT PREDICTIVE MAINTENANCE SYSTEM - WEB DASHBOARD  ");
-        System.out.println("  Accessible locally at: http://localhost:" + PORT);
+        System.out.println("  Server bound to: 0.0.0.0:" + port);
+        System.out.println("  Accessible at: http://localhost:" + port);
         System.out.println("==========================================================");
-
-        // 2. Launch the Swing Desktop Application in background EDT
-        new Thread(() -> {
-            try {
-                AirlineApp.main(new String[0]);
-            } catch (Exception e) {
-                System.err.println("Note: Headless or Swing startup notification: " + e.getMessage());
-            }
-        }).start();
     }
 
     // ==============================================================
@@ -1103,6 +1107,13 @@ public class WebAppMain {
     // ==============================================================
     // REST API HANDLERS
     // ==============================================================
+    static class HealthCheckHandler implements HttpHandler {
+        @Override
+        public void handle(HttpExchange exchange) throws IOException {
+            sendResponse(exchange, 200, "application/json", "{\"status\":\"UP\"}");
+        }
+    }
+
     static class FleetApiHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange exchange) throws IOException {

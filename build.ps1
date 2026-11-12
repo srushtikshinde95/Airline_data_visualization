@@ -5,7 +5,7 @@ Write-Host "==========================================================" -Foregro
 $projectRoot = $PSScriptRoot
 Set-Location $projectRoot
 
-mvn clean compile
+mvn clean package
 if ($LASTEXITCODE -ne 0) {
     Write-Host "[ERROR] Maven build failed." -ForegroundColor Red
     exit 1

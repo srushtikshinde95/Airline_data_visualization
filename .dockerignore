@@ -1,0 +1,56 @@
+# ==============================================================
+# Docker Ignore Rules for Airline Data Visualization Project
+# ==============================================================
+
+# Version control
+.git/
+.gitignore
+
+# Maven and compiler build outputs
+target/
+bin/
+out/
+build/
+dist/
+*.jar
+*.war
+*.ear
+*.class
+dependency-reduced-pom.xml
+
+# IDE and Editor directories / metadata
+.idea/
+*.iml
+*.iws
+*.ipr
+.vscode/
+.classpath
+.project
+.settings/
+.nb-attrs
+nbproject/
+
+# Logs and test outputs
+*.log
+tmp/
+temp/
+test_output/
+
+# Operating system files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Python / virtual environment artifacts
+ml_service/
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+
+# Local scripts and documentation unnecessary for container build
+*.bat
+*.ps1
+DOCUMENTATION.md
+literature_review_table.html

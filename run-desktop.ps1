@@ -5,4 +5,4 @@ Write-Host "==========================================================" -Foregro
 $projectRoot = $PSScriptRoot
 Set-Location $projectRoot
 
-mvn exec:java "-Dexec.mainClass=com.airdata.Main"
+mvn exec:java "-Dexec.mainClass=com.airdata.main.AirlineApp"
